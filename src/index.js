@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 const App = () => {
-    return <div>App runs!</div>;
+    return <div className="test">App runs!</div>;
 };
 
-ReactDOM.render(<App/>, document.getElementById("App"))
+ReactDOM.render(<App className="test"/>, document.getElementById("App"))
