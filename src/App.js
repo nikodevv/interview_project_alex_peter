@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Container, Row} from 'reactstrap';
-import {SearchBar} from './components/SearchBar'
+import {SearchBarRow} from './components/SearchBar'
 
 class App extends Component {
     render(){
         return (
             <Container>
-                <SearchBar/>
+                <SearchBarRow/>
                 <div className="test-sizing"></div>
             </Container>
         );
