@@ -5,12 +5,10 @@ class App extends Component {
     render(){
         return (
             <Container>
-                <Row>
-                    <Col className="test">
-                        .
-                    </Col>
-
+                <Row className="SearchBarContainer sticky-top">
+                    .
                 </Row>
+                <div className="test-sizing"></div>
             </Container>
         );
     }

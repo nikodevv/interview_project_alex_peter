@@ -1,7 +1,9 @@
 /*Search Bar and container*/
-.test {
+.SearchBarContainer {
     background-color: red;
+    height: 75px;   
 }
-body{
-    width: 100%;
+
+.test-sizing{
+    height: 5000px;
 }
