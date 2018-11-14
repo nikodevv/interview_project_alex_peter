@@ -1,7 +1,9 @@
 /*Search Bar and container*/
 .SearchBarContainer {
-    background-color: red;
     height: 75px;
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: grey;
 }
 
 .children-along-bot{
