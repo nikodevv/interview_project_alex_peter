@@ -10,7 +10,7 @@ class App extends Component {
     };
 
     /**
-     * Stores input string to state.
+     * Callback used to store user input to state.
      * @param {KeyboardEvent} e
      */
     getSearchOnEnter(e){
