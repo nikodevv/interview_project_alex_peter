@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Row} from 'reactstrap';
 import {SearchBarRow} from './components/SearchBar'
+import {AlcoholList} from './components/AlcoholList'
 
 class App extends Component {
     constructor(props){
@@ -21,7 +22,7 @@ class App extends Component {
         return (
             <Container>
                 <SearchBarRow eventHandler={this.getSearchOnEnter}/>
-                <Row>{this.state.searchStr}</Row>
+                <AlcoholList searchStr={this.state.searchStr}></AlcoholList>
             </Container>
         );
     }
