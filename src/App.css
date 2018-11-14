@@ -1,9 +1,18 @@
 /*Search Bar and container*/
 .SearchBarContainer {
     background-color: red;
-    height: 75px;   
+    height: 75px;
 }
 
+.children-along-bot{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.title-header{
+    font-family: "Times New Roman", Times, serif;
+    bottom: 2px;
+}
 .test-sizing{
     height: 5000px;
 }

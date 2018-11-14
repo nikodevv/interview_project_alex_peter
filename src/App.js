@@ -6,7 +6,7 @@ class App extends Component {
     render(){
         return (
             <Container>
-                <SearchBar></SearchBar>
+                <SearchBar/>
                 <div className="test-sizing"></div>
             </Container>
         );
