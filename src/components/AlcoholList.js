@@ -9,7 +9,11 @@ import {API_KEY} from '../misc/API_KEY';
 class AlcoholList extends Component{
     constructor(props){
         super(props);
-        this.state = {loadedItems: []}
+        this.state = {
+            listType: "alcoholItem",
+            loadedItems: []
+        };
+        this.buildListItem = this.buildListItem.bind(this)
     };
 
     /**
@@ -19,6 +23,7 @@ class AlcoholList extends Component{
      * @param {string} str_ - Search string for query
      */
     getItems(str_){
+        
         $.ajax({
             url: `//lcboapi.com/products?name=${str_}`,
             type: 'get',
@@ -29,29 +34,45 @@ class AlcoholList extends Component{
             async: true,
             success: (data) => {
                 console.log(data)
-                data.results.forEach(this.createAlcoholItem);
+                data.result.forEach(this.buildListItem);
             }
         });
     };
+
+    /**
+     * Abstract factory that either creates an AlcoholItem 
+     * or a StoreItem based on this.state.listType
+     * @param {Object} data - all data relating to a
+     * particular object that is returned from LCBO query
+     * @return {Function} - a React functional component.
+     */
+    buildListItem(data){
+        const buildAlcoholItem = (data) => {
+            let newLoadedItems = this.state.loadedItems.slice();
+            newLoadedItems.push(
+                <AlcoholItem key={data.id} name={data.name} thumb={data.image_thumb_url}/>
+            );
+            this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
+        };
+        if (data.hasOwnProperty("price_in_cents")){
+            buildAlcoholItem(data);
+        }
+    };
     componentDidMount(){
-        this.getItems()
-    }
-    createAlcoholItem(){
-        let newLoadedItems = this.state.loadedItems.slice();
-        this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
+        this.getItems();
     }
     render () {
         return (
             <div>{this.state.loadedItems}</div>
         );
-    }
+    };
 };
 
 const AlcoholItem = (props) =>{
     return(
-        <Row>
-            <Col>props.name</Col>
-
+        <Row className="item">
+            <Col lg="1"><img src={props.thumb} className="booze-thumbnail"/></Col>
+            <Col className="alcohol-text">{props.name}</Col>
         </Row>
     )
 };
