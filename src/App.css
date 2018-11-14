@@ -28,9 +28,10 @@
 .alcohol-text{
     display: flex;
     flex-direction: column-reverse;
-    padding-bottom: 2px;
+    padding-bottom: 0.5rem;
 }
 
 .item:hover{
-    background-color: #B6FEDA;
+    transition: background-color 0.25s ease;
+    background-color: #D9FEEC;
 }

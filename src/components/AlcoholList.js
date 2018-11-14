@@ -3,6 +3,7 @@ import {Row, Col} from 'reactstrap';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 import {API_KEY} from '../misc/API_KEY';
+import { format } from 'util';
 /**
  * A list of alcohol "Item"s.
  */
@@ -50,7 +51,10 @@ class AlcoholList extends Component{
         const buildAlcoholItem = (data) => {
             let newLoadedItems = this.state.loadedItems.slice();
             newLoadedItems.push(
-                <AlcoholItem key={data.id} name={data.name} thumb={data.image_thumb_url}/>
+                <AlcoholItem 
+                    key={data.id} name={data.name} thumb={data.image_thumb_url}
+                    price={data.price_in_cents}    
+                />
             );
             this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
         };
@@ -69,10 +73,24 @@ class AlcoholList extends Component{
 };
 
 const AlcoholItem = (props) =>{
+    /**
+     * Formats price to $0.00
+     * @param {String} price - Price of item in cents 
+     */
+    const formatPrice = (price) =>{
+        price = String(price);
+        let formattedPrice = "$"+price.substr(0,2) + "." + price.substr(2,price.length-1);
+        while (formattedPrice.length<6){
+            formattedPrice += "0"
+        };
+        return formattedPrice
+    };
+    
     return(
-        <Row className="item">
-            <Col lg="1"><img src={props.thumb} className="booze-thumbnail"/></Col>
-            <Col className="alcohol-text">{props.name}</Col>
+        <Row>
+            <Col lg="1"><img src={props.thumb} className="booze-thumbnail item"/></Col>
+            <Col lg="10" className="alcohol-text item">{props.name}</Col>
+            <Col lg="auto" className="alcohol-text">{formatPrice(props.price)}</Col>
         </Row>
     )
 };
