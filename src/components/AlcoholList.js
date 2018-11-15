@@ -63,9 +63,7 @@ class AlcoholList extends Component{
             buildAlcoholItem(data);
         }
     };
-    componentDidMount(){
-        
-    }
+    
     componentDidUpdate(prevProps) {
         if (this.props.searchStr !== prevProps.searchStr) {
             this.getItems(this.props.searchStr);
