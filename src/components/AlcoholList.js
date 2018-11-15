@@ -40,7 +40,7 @@ class AlcoholList extends Component{
         const buildStoreItem = (data) => {
             let newLoadedItems = this.state.loadedItems.slice();
             newLoadedItems.push(
-    
+                <StoreItem/>
             )
             this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
         }
