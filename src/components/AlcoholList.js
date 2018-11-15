@@ -14,7 +14,44 @@ class AlcoholList extends Component{
             listType: "alcoholItem",
             loadedItems: []
         };
-        this.buildListItem = this.buildListItem.bind(this)
+        this.buildListItem = this.buildListItem.bind(this);
+    };
+    
+    /**
+     * Abstract factory that either creates an AlcoholItem 
+     * or a StoreItem based on this.state.listType
+     * @param {Object} data - all data relating to a
+     * particular object that is returned from LCBO query
+     * @return {Function} - a React functional component.
+     */
+    buildListItem(data){
+        //constructs an Alcohol Item and saves to state
+        const buildAlcoholItem = (data) => {
+            let newLoadedItems = this.state.loadedItems.slice();
+            newLoadedItems.push(
+                <AlcoholItem key={data.id} name={data.name} 
+                thumb={data.image_thumb_url} price={data.price_in_cents} 
+                onClick={()=>{this.onProductClick(data.id)}}/>
+            );
+            this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
+        };
+    
+        // constructs a StoreItem and saves to state
+        const buildStoreItem = (data) => {
+            let newLoadedItems = this.state.loadedItems.slice();
+            newLoadedItems.push(
+    
+            )
+            this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
+        }
+        // figures out what kind of item should be constructed
+        // based on property of data paramater
+        if (data.hasOwnProperty("price_in_cents")){
+            buildAlcoholItem(data);
+        }
+        else if (data.hasOwnProperty("latitude")){
+            buildStoreItem(data)
+        }
     };
 
     /**
@@ -23,9 +60,7 @@ class AlcoholList extends Component{
      * returned data to create appropriate list type.
      * @param {string} str_ - Search string for query
      */
-
     getItems(str_){
-        alert(str_)
         $.ajax({
             url: `//lcboapi.com/products?q=${str_}`,
             type: 'get',
@@ -41,35 +76,53 @@ class AlcoholList extends Component{
         });
     };
 
-    /**
-     * Abstract factory that either creates an AlcoholItem 
-     * or a StoreItem based on this.state.listType
-     * @param {Object} data - all data relating to a
-     * particular object that is returned from LCBO query
-     * @return {Function} - a React functional component.
-     */
-    buildListItem(data){
-        const buildAlcoholItem = (data) => {
-            let newLoadedItems = this.state.loadedItems.slice();
-            newLoadedItems.push(
-                <AlcoholItem 
-                    key={data.id} name={data.name} thumb={data.image_thumb_url}
-                    price={data.price_in_cents}    
-                />
-            );
-            this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
-        };
-        if (data.hasOwnProperty("price_in_cents")){
-            buildAlcoholItem(data);
+    setStoreItemData(id){
+        
+        $.ajax({
+            url: `//lcboapi.com/stores?product_id=${id}&${this.getCoordQuery()}`,
+            type: 'get',
+            dataType: "json",
+            headers: {
+                'Authorization': `Token token="${API_KEY}"`
+            },
+            async: true,
+            success: (data) => {
+                console.log(data)
+                data.result.forEach(this.buildListItem);
+            }
+        });
+    };
+
+    getCoordQuery(){
+        let lat= "43.6543",  long = "-79.7132";
+        if (navigator.geolocation){
+            navigator.geolocation.getCurrentPosition((position) =>{
+                lat = position.coords.latitude;
+                long = position.coords.longtitude;
+            });
         }
+        else{
+            alert("Geolocation not supported. Using Toronto core as your location");
+        };
+        return (`lat=${lat}`+`&lon=${long}`);
     };
     
+    /**
+     * On click handler that toggles on store list 
+     * in this.state and clear list.
+     */
+    onProductClick(id){
+        this.setState({loadedItems:[], listType:"storeList"});
+        this.setStoreItemData(id);
+    };
+
     componentDidUpdate(prevProps) {
         if (this.props.searchStr !== prevProps.searchStr) {
             this.getItems(this.props.searchStr);
             this.setState({loadedItems:[], listType: "alcoholItem"})
         };
     }
+
     render () {
         return (
             <div>{this.state.loadedItems}</div>
@@ -92,7 +145,7 @@ const AlcoholItem = (props) =>{
     };
 
     return(
-        <Row>
+        <Row onClick={props.onClick}>
             <Col lg="1"><img src={props.thumb} className="booze-thumbnail item"/></Col>
             <Col lg="10" className="alcohol-text item">{props.name}</Col>
             <Col lg="auto" className="alcohol-text">{formatPrice(props.price)}</Col>
@@ -100,6 +153,13 @@ const AlcoholItem = (props) =>{
     )
 };
 
+const StoreItem = (props) =>{
+    return(
+        <Row>
+            test
+        </Row>
+    )
+}
 AlcoholList.propTypes = {
     /**
      * String used to generate API query string.
