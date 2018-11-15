@@ -12,7 +12,6 @@ class AlcoholList extends Component{
     constructor(props){
         super(props);
         this.state = {
-            listType: "alcoholItem",
             loadedItems: [],
             coord: "lat=43.653+&lon=-79.383"
         };
@@ -22,7 +21,8 @@ class AlcoholList extends Component{
     
     /**
      * Abstract factory that either creates an AlcoholItem 
-     * or a StoreItem based on this.state.listType
+     * or a StoreItem based on the type of data it is given.
+     * 
      * @param {Object} data - all data relating to a
      * particular object that is returned from LCBO query
      * @return {Function} - a React functional component.
@@ -125,7 +125,7 @@ class AlcoholList extends Component{
      * in this.state and clear list.
      */
     onProductClick(id){
-        this.setState({loadedItems:[], listType:"storeList"});
+        this.setState({loadedItems:[]});
         this.setStoreItemData(id);
     };
 
@@ -136,7 +136,7 @@ class AlcoholList extends Component{
     componentDidUpdate(prevProps) {
         if (this.props.searchStr !== prevProps.searchStr) {
             this.setAlcoholItemData(this.props.searchStr);
-            this.setState({loadedItems:[], listType: "alcoholItem"})
+            this.setState({loadedItems:[]})
         };
     }
 
