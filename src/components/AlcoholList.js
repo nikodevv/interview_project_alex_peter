@@ -3,6 +3,7 @@ import {Row, Col} from 'reactstrap';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 import {API_KEY} from '../misc/API_KEY';
+import {AlcoholItem} from './AlcoholItem';
 
 /**
  * A list of alcohol and store items.
@@ -130,28 +131,6 @@ class AlcoholList extends Component{
     };
 };
 
-const AlcoholItem = (props) =>{
-    /**
-     * Formats price to $0.00
-     * @param {String} price - Price of item in cents 
-     */
-    const formatPrice = (price) =>{
-        price = String(price);
-        let formattedPrice = "$"+price.substr(0,2) + "." + price.substr(2,price.length-1);
-        while (formattedPrice.length<6){
-            formattedPrice += "0"
-        };
-        return formattedPrice
-    };
-
-    return(
-        <Row onClick={props.onClick}>
-            <Col lg="1"><img src={props.thumb} className="booze-thumbnail item"/></Col>
-            <Col lg="10" className="alcohol-text item">{props.name}</Col>
-            <Col lg="auto" className="alcohol-text">{formatPrice(props.price)}</Col>
-        </Row>
-    )
-};
 
 const StoreItem = (props) =>{
     return(
@@ -160,6 +139,7 @@ const StoreItem = (props) =>{
         </Row>
     )
 }
+
 AlcoholList.propTypes = {
     /**
      * String used to generate API query string.
