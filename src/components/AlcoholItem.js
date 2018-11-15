@@ -1,7 +1,6 @@
 import React from 'react';
 import {Row, Col} from 'reactstrap';
 import PropTypes from 'prop-types';
-import { AlcoholList } from './AlcoholList';
 
 const AlcoholItem = (props) =>{
     /**
