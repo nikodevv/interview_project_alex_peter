@@ -58,12 +58,12 @@ class AlcoholList extends Component{
     };
 
     /**
-     * Makes API call to LCBO for desired product.
-     * and calls abstract factory function with
-     * returned data to create appropriate list type.
+     * Makes API call to LCBO for desired product,
+     * then pases data to callback to abstract factory
+     * function that builds the list
      * @param {string} str_ - Search string for query
      */
-    getItems(str_){
+    setAlcoholItemData(str_){
         $.ajax({
             url: `//lcboapi.com/products?q=${str_}`,
             type: 'get',
@@ -79,8 +79,13 @@ class AlcoholList extends Component{
         });
     };
 
+    /**
+     * Makes API call to LCBO to find closest stores.
+     * with desired product id, then pases data to callback to 
+     * abstract factory function that builds the list
+     * @param {String} id - Product id 
+     */
     setStoreItemData(id){
-        
         $.ajax({
             url: `//lcboapi.com/stores?product_id=${id}&${this.getCoordQuery()}`,
             type: 'get',
@@ -96,6 +101,10 @@ class AlcoholList extends Component{
         });
     };
 
+    /**
+     * Get URL query param containing user geolocation
+     * data.
+     */
     getCoordQuery(){
         let lat= "43.6543",  long = "-79.7132";
         if (navigator.geolocation){
@@ -121,7 +130,7 @@ class AlcoholList extends Component{
 
     componentDidUpdate(prevProps) {
         if (this.props.searchStr !== prevProps.searchStr) {
-            this.getItems(this.props.searchStr);
+            this.setAlcoholItemData(this.props.searchStr);
             this.setState({loadedItems:[], listType: "alcoholItem"})
         };
     }
