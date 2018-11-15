@@ -1,6 +1,6 @@
 # interview_project_alex_peter
 I've included some screenshots of what the app looks like in `/screenshots*` so you can see the app on a large screen.  
-Projet was done in `React` with `webpack` + `Babel`
+Project was done in `React` with `webpack` + `Babel`
 ## Installation
 
 Download source code or run  
