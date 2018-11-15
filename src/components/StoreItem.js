@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const StoreItem = (props) =>{
     return(
-        <Row>
+        <Row className="item">
             <Col lg="5">{props.name}</Col>
             <Col lg="5">{props.address}</Col>
             <Col lg="2">Distance (m): {props.distance}</Col>
