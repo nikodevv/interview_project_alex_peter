@@ -3,9 +3,9 @@ import {Row, Col} from 'reactstrap';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 import {API_KEY} from '../misc/API_KEY';
-import { format } from 'util';
+
 /**
- * A list of alcohol "Item"s.
+ * A list of alcohol and store items.
  */
 class AlcoholList extends Component{
     constructor(props){
@@ -23,10 +23,11 @@ class AlcoholList extends Component{
      * returned data to create appropriate list type.
      * @param {string} str_ - Search string for query
      */
+
     getItems(str_){
-        
+        alert(str_)
         $.ajax({
-            url: `//lcboapi.com/products?name=${str_}`,
+            url: `//lcboapi.com/products?q=${str_}`,
             type: 'get',
             dataType: "json",
             headers: {
@@ -63,7 +64,13 @@ class AlcoholList extends Component{
         }
     };
     componentDidMount(){
-        this.getItems();
+        
+    }
+    componentDidUpdate(prevProps) {
+        if (this.props.searchStr !== prevProps.searchStr) {
+            this.getItems(this.props.searchStr);
+            this.setState({loadedItems:[], listType: "alcoholItem"})
+        };
     }
     render () {
         return (
@@ -85,7 +92,7 @@ const AlcoholItem = (props) =>{
         };
         return formattedPrice
     };
-    
+
     return(
         <Row>
             <Col lg="1"><img src={props.thumb} className="booze-thumbnail item"/></Col>
