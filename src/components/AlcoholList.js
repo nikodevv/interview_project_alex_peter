@@ -41,7 +41,9 @@ class AlcoholList extends Component{
         const buildStoreItem = (data) => {
             let newLoadedItems = this.state.loadedItems.slice();
             newLoadedItems.push(
-                <StoreItem/>
+                <StoreItem key={data.id} name={data.name} 
+                    distance={data.distance_in_meters} 
+                    address={`${data.address_line_1}, ${data.city}, ${data.postal_code}`}/>
             )
             this.setState(Object.assign({}, {loadedItems: newLoadedItems}));
         }
@@ -130,6 +132,8 @@ class AlcoholList extends Component{
         );
     };
 };
+
+
 
 AlcoholList.propTypes = {
     /**
