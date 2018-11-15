@@ -13,9 +13,11 @@ class AlcoholList extends Component{
         super(props);
         this.state = {
             listType: "alcoholItem",
-            loadedItems: []
+            loadedItems: [],
+            coord: "lat=43.653+&lon=-79.383"
         };
         this.buildListItem = this.buildListItem.bind(this);
+        this.setCoordQuery = this.setCoordQuery.bind(this);
     };
     
     /**
@@ -87,7 +89,7 @@ class AlcoholList extends Component{
      */
     setStoreItemData(id){
         $.ajax({
-            url: `//lcboapi.com/stores?product_id=${id}&${this.getCoordQuery()}`,
+            url: `//lcboapi.com/stores?product_id=${id}&${this.state.coord}`,
             type: 'get',
             dataType: "json",
             headers: {
@@ -102,21 +104,20 @@ class AlcoholList extends Component{
     };
 
     /**
-     * Get URL query param containing user geolocation
-     * data.
+     * Save URL query param containing user geolocation
+     * data to state. 
      */
-    getCoordQuery(){
-        let lat= "43.6543",  long = "-79.7132";
+    setCoordQuery(){
         if (navigator.geolocation){
             navigator.geolocation.getCurrentPosition((position) =>{
-                lat = position.coords.latitude;
-                long = position.coords.longtitude;
+                let lat = position.coords.latitude;
+                let long = position.coords.longitude;
+                this.setState({coord: `lat=${lat}`+`&lon=${long}`})
             });
         }
         else{
             alert("Geolocation not supported. Using Toronto core as your location");
         };
-        return (`lat=${lat}`+`&lon=${long}`);
     };
     
     /**
@@ -126,6 +127,10 @@ class AlcoholList extends Component{
     onProductClick(id){
         this.setState({loadedItems:[], listType:"storeList"});
         this.setStoreItemData(id);
+    };
+
+    componentDidMount(){
+        this.setCoordQuery();
     };
 
     componentDidUpdate(prevProps) {
