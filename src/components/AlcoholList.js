@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Row, Col} from 'reactstrap';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 import {API_KEY} from '../misc/API_KEY';
 import {AlcoholItem} from './AlcoholItem';
+import {StoreItem} from './StoreItem';
 
 /**
  * A list of alcohol and store items.
@@ -130,15 +130,6 @@ class AlcoholList extends Component{
         );
     };
 };
-
-
-const StoreItem = (props) =>{
-    return(
-        <Row>
-            test
-        </Row>
-    )
-}
 
 AlcoholList.propTypes = {
     /**
